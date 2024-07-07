@@ -1,3 +1,5 @@
+import loadish from "lodash";
+
 const defaultPassword = "1q2w3e4r";
 export class UserService {
   constructor({ userRepository }) {
@@ -13,7 +15,11 @@ export class UserService {
     if (!user.password) {
       user.password = this.createPasswordDefault();
     }
-    return await this.userRepository.create(user);
+    const resultUser = await this.userRepository.create(user);
+    if (loadish.isEmpty(resultUser)) {
+      throw new Error("Failed to create user in database");
+    }
+    return user;
   }
 
   // 회원 전체 조회
@@ -43,9 +49,15 @@ export class UserService {
 
   // 계정 여러개 삭제
   async deleteByLoginIds(loginIds) {
-    return loginIds.map(async (loginId) => {
-      await this.userRepository.deleteByLoginId(loginId);
-    });
+    const promiseIds = loginIds.map(
+      async (loginId) => await this.userRepository.deleteByLoginId(loginId)
+    );
+    return await Promise.all(promiseIds);
+  }
+
+  // 계정 복구
+  async restoreByLoginId(loginId) {
+    return await this.userRepository.restoreByLoginId(loginId);
   }
 
   createPasswordDefault() {

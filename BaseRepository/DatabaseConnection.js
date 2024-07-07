@@ -13,12 +13,16 @@ export class DatabaseConnection {
   }
 
   async initialize(filename) {
-    this.db = await open({
-      filename: filename || ":memory:",
-      driver: sqlite3.Database,
-    });
-    console.log("Connected to the in-memory SQLite database.");
-    await this.initializeTables();
+    try {
+      this.db = await open({
+        filename: filename || ":memory:",
+        driver: sqlite3.Database,
+      });
+      console.log("Connected to the in-memory SQLite database.");
+      await this.initializeTables();
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   async initializeTables() {

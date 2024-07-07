@@ -1,5 +1,6 @@
 import { BaseRepository } from "../BaseRepository/BaseRepository.js";
 import { camelToSnakeCase } from "../utils/camelToSnakeCase.js";
+import { snakeToCamelCase } from "../utils/snakeToCamelCase.js";
 
 export class UserRepository extends BaseRepository {
   constructor() {
@@ -32,9 +33,10 @@ export class UserRepository extends BaseRepository {
   async getAll() {
     await this.initialize();
     try {
-      return await this.db.all(
-        `SELECT * FROM ${this.tableName} WHERE is_deleted = 0`
+      const result = await this.db.all(
+        `SELECT id, login_id, name, password, email, position, phone, img FROM ${this.tableName} WHERE is_deleted = 0`
       );
+      return this.convertFieldsToCamelCase(result);
     } catch (e) {
       console.error(e);
       return null;
@@ -47,7 +49,7 @@ export class UserRepository extends BaseRepository {
 
     try {
       return await this.db.get(
-        `SELECT * FROM ${this.tableName} WHERE email = ?
+        `SELECT id, login_id, name, email, position, phone, img FROM ${this.tableName} WHERE email = ?
       AND is_deleted = 0
       `,
         email
@@ -62,11 +64,12 @@ export class UserRepository extends BaseRepository {
   async getByLoginId(loginId) {
     await this.initialize();
     try {
-      return await this.db.get(
-        `SELECT * FROM ${this.tableName} WHERE login_id = ?
+      const result = await this.db.get(
+        `SELECT id, login_id, name, email, position, phone, img FROM ${this.tableName} WHERE login_id = ?
       AND is_deleted = 0`,
         loginId
       );
+      return this.snakeToCamelCaseKeys(result);
     } catch (e) {
       console.error(e);
       return null;
@@ -78,12 +81,13 @@ export class UserRepository extends BaseRepository {
     await this.initialize();
     try {
       const result = await this.db.get(
-        `SELECT * FROM ${this.tableName} WHERE login_id = ? AND password = ?
+        `SELECT id, login_id, name, email, position, phone, img
+        FROM ${this.tableName} WHERE login_id = ? AND password = ?
         AND is_deleted = 0`,
         loginId,
         password
       );
-      return result;
+      return this.snakeToCamelCaseKeys(result);
     } catch (e) {
       console.error(e);
       return null;
@@ -129,7 +133,7 @@ export class UserRepository extends BaseRepository {
   }
 
   //  계정 복구
-  async restoreLoginId(loginId) {
+  async restoreByLoginId(loginId) {
     await this.initialize();
     try {
       await this.db.run(
@@ -153,8 +157,28 @@ export class UserRepository extends BaseRepository {
     }
   }
 
-  // json 필드로 받은 데이터를 스네이크케이스로 변환
+  // json 형식을 키 값을 스네이크케이스로 변환
   convertKeysToSnakeCase(keys) {
     return keys.map((key) => camelToSnakeCase(key));
+  }
+
+  // 데이터베이스에서 받은 데이터를 json 필드로 변환
+  convertFieldsToCamelCase(fields) {
+    return fields.map((field) => {
+      const newField = {};
+      for (const key in field) {
+        newField[snakeToCamelCase(key)] = field[key];
+      }
+      return newField;
+    });
+  }
+
+  // json객체 형태의 카멜케이스로 변환
+  snakeToCamelCaseKeys(entity) {
+    const newEntity = {};
+    for (const key in entity) {
+      newEntity[snakeToCamelCase(key)] = entity[key];
+    }
+    return newEntity;
   }
 }
