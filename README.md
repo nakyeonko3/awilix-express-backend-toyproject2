@@ -33,3 +33,6 @@ npm run start # node ./server.js
 # or want to use nodemon
 npm run server
 ```
+
+## 데이터베이스 ERD 와 쿼리문
+[awilix-express-backend-toyproject2/databaseDegin.md at main · nakyeonko3/awilix-express-backend-toyproject2 · GitHub](https://github.com/nakyeonko3/awilix-express-backend-toyproject2/blob/main/databaseDegin.md)
