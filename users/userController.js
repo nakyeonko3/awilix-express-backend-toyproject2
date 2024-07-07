@@ -10,10 +10,11 @@ export class UserController {
   routes() {
     this.router.post("/", this.createUser.bind(this));
     this.router.get("/", this.getAll.bind(this));
-    this.router.get("/showinfo", this.getUserByLoginId.bind(this));
-    this.router.get("/login", this.getUserByLoginIdAndPassword.bind(this));
-    this.router.put("/", this.updateByLoginId.bind(this));
-    this.router.put("/", this.deleteByLoginId.bind(this));
+    this.router.get("/show-info", this.getUserByLoginId.bind(this));
+    this.router.post("/login", this.getUserByLoginIdAndPassword.bind(this));
+    this.router.put("/edit", this.updateByLoginId.bind(this));
+    this.router.delete("/delete", this.deleteByLoginId.bind(this));
+    this.router.delete("/delete-many", this.deleteByLoginIds.bind(this));
   }
 
   // 회원가입,
@@ -30,6 +31,7 @@ export class UserController {
   }
 
   // 계정 개인 정보 조회
+  // => req.body: { loginId }
   async getUserByLoginId(req, res) {
     const { loginId } = req.body;
     const user = await this.userService.getUserByLoginId(loginId);
@@ -52,13 +54,16 @@ export class UserController {
   }
 
   // 계정 개인정보 수정
+  // => req.body: { loginId, password, name, email, phone }
   async updateByLoginId(req, res) {
     const { loginId } = req.body;
+    console.log(`loginId: ${loginId}, req.body: ${req.body}`);
     const user = await this.userService.updateByLoginId(loginId, req.body);
     res.status(200).json(user);
   }
 
   // 계정 삭제
+  // => req.body: { loginId }
   async deleteByLoginId(req, res) {
     const { loginId } = req.body;
     const deleted = await this.userService.deleteByLoginId(loginId);
@@ -67,6 +72,7 @@ export class UserController {
 
   // 계정 여러개 삭제
   // loginIds: [loginId1, loginId2, ...]
+  // => req.body: { loginIds: [loginId1, loginId2, ...] }
   async deleteByLoginIds(req, res) {
     const { loginIds } = req.body;
     const deleteds = await this.userService.deleteByLoginIds(loginIds);

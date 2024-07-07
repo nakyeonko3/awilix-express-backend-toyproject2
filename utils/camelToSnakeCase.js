@@ -5,5 +5,3 @@ function camelToSnakeCase(str) {
 }
 
 export { camelToSnakeCase };
-
-console.log("JSON Data:", camelToSnakeCase("loginId"));

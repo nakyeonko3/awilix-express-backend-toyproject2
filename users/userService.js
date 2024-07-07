@@ -13,7 +13,6 @@ export class UserService {
     if (!user.password) {
       user.password = this.createPasswordDefault();
     }
-    console.log(user);
     return await this.userRepository.create(user);
   }
 
@@ -29,7 +28,7 @@ export class UserService {
 
   // 계정 개인정보 수정
   async updateByLoginId(loginId, user) {
-    return await this.userRepository.update(loginId, user);
+    return await this.userRepository.updateByLoginId(loginId, user);
   }
 
   // 계정 개인 정보 조회
