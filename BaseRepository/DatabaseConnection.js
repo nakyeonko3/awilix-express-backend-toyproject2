@@ -1,5 +1,5 @@
-import sqlite3 from "sqlite3";
-import { open } from "sqlite";
+import sqlite3 from 'sqlite3';
+import { open } from 'sqlite';
 
 export class DatabaseConnection {
   static instance = null;
@@ -15,10 +15,10 @@ export class DatabaseConnection {
   async initialize(filename) {
     try {
       this.db = await open({
-        filename: filename || ":memory:",
+        filename: filename || ':memory:',
         driver: sqlite3.Database,
       });
-      console.log("Connected to the in-memory SQLite database.");
+      console.log('Connected to the in-memory SQLite database.');
       await this.initializeTables();
     } catch (e) {
       console.error(e);
@@ -94,13 +94,22 @@ create table if not exists administrator(
     await this.db.run(`
 create table if not exists company_gallery(
     id integer primary key,
-    administrator_id integer not null,
     title TEXT,
     content text,
     img text,
     FOREIGN KEY (administrator_id) REFERENCES administrator(id)
 );
         `);
+    //     await this.db.run(`
+    // create table if not exists company_gallery(
+    //     id integer primary key,
+    //     administrator_id integer not null,
+    //     title TEXT,
+    //     content text,
+    //     img text,
+    //     FOREIGN KEY (administrator_id) REFERENCES administrator(id)
+    // );
+    //         `);
   }
 
   getDatabase() {

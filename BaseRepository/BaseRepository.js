@@ -1,4 +1,4 @@
-import { DatabaseConnection } from "./DatabaseConnection.js";
+import { DatabaseConnection } from './DatabaseConnection.js';
 export class BaseRepository {
   constructor(tableName) {
     this.tableName = tableName;
@@ -19,21 +19,16 @@ export class BaseRepository {
 
   async getById(id) {
     await this.initialize();
-    return await this.db.get(
-      `SELECT * FROM ${this.tableName} WHERE id = ?`,
-      id
-    );
+    return await this.db.get(`SELECT * FROM ${this.tableName} WHERE id = ?`, id);
   }
 
-  async create(entity) {
+  async create(entity, keys, values) {
     await this.initialize();
-    const keys = Object.keys(entity);
-    const values = Object.values(entity);
-    const placeholders = keys.map(() => "?").join(",");
+    const keys = keys || Object.keys(entity);
+    const values = values || Object.values(entity);
+    const placeholders = keys.map(() => '?').join(',');
     const { lastID } = await this.db.run(
-      `INSERT INTO ${this.tableName} (${keys.join(
-        ","
-      )}) VALUES (${placeholders})`,
+      `INSERT INTO ${this.tableName} (${keys.join(',')}) VALUES (${placeholders})`,
       values
     );
     return { id: lastID, ...entity };
@@ -42,14 +37,11 @@ export class BaseRepository {
   async update(id, entity) {
     await this.initialize();
     const sets = Object.keys(entity)
-      .map((key) => `${key} = ?`)
-      .join(", ");
+      .map(key => `${key} = ?`)
+      .join(', ');
     const values = [...Object.values(entity), id];
 
-    await this.db.run(
-      `UPDATE ${this.tableName} SET ${sets} WHERE id = ?`,
-      values
-    );
+    await this.db.run(`UPDATE ${this.tableName} SET ${sets} WHERE id = ?`, values);
     return await this.getById(id);
   }
 

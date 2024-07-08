@@ -4,12 +4,19 @@ import history from 'connect-history-api-fallback';
 import morgan from 'morgan';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import cors from 'cors';
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// app.use(express.urlencoded({ extended: true }));
+app.use(
+  cors({
+    origin: '*',
+  })
+);
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(
@@ -51,3 +58,6 @@ app.use('/api/v1/users', userController.router);
 
 const attendanceController = container.resolve('attendanceController');
 app.use('/api/v1/attendance', attendanceController.router);
+
+const galleryController = container.resolve('galleryController');
+app.use('/api/v1/gallery', galleryController.router);

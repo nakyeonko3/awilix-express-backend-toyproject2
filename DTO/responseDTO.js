@@ -9,7 +9,7 @@ export class ResponseDTO {
     return new ResponseDTO(200, message, data);
   }
 
-  static fail(message = 'fail') {
-    return new ResponseDTO(400, message, null);
+  static fail(message = 'fail', data = null) {
+    return new ResponseDTO(400, message, data);
   }
 }
