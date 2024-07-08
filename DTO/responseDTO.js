@@ -5,14 +5,11 @@ export class ResponseDTO {
     this.data = data;
   }
 
-  static success(data, message = "success") {
+  static success(data, message = 'ok') {
     return new ResponseDTO(200, message, data);
   }
 
-  static fail(message = "fail") {
+  static fail(message = 'fail') {
     return new ResponseDTO(400, message, null);
   }
 }
-
-console.log(ResponseDTO.success({ name: "kim" }));
-console.log(ResponseDTO.fail("fail"));

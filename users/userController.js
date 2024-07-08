@@ -1,6 +1,6 @@
-import express from "express";
-import { ResponseDTO } from "../DTO/responseDTO.js";
-import loadish from "lodash";
+import express from 'express';
+import { ResponseDTO } from '../DTO/responseDTO.js';
+import loadish from 'lodash';
 export class UserController {
   constructor({ userService }) {
     this.userService = userService;
@@ -9,14 +9,14 @@ export class UserController {
   }
 
   routes() {
-    this.router.post("/", this.createUser.bind(this));
-    this.router.get("/", this.getAll.bind(this));
-    this.router.get("/show-info", this.getUserByLoginId.bind(this));
-    this.router.post("/login", this.getUserByLoginIdAndPassword.bind(this));
-    this.router.put("/edit", this.updateByLoginId.bind(this));
-    this.router.delete("/delete", this.deleteByLoginId.bind(this));
-    this.router.delete("/delete-many", this.deleteByLoginIds.bind(this));
-    this.router.put("/restore", this.restoreByLoginId.bind(this));
+    this.router.post('/', this.createUser.bind(this));
+    this.router.get('/', this.getAll.bind(this));
+    this.router.get('/show-info', this.getUserByLoginId.bind(this));
+    this.router.post('/login', this.getUserByLoginIdAndPassword.bind(this));
+    this.router.put('/edit', this.updateByLoginId.bind(this));
+    this.router.delete('/delete', this.deleteByLoginId.bind(this));
+    this.router.delete('/delete-many', this.deleteByLoginIds.bind(this));
+    this.router.put('/restore', this.restoreByLoginId.bind(this));
   }
 
   // 회원가입,
@@ -27,11 +27,11 @@ export class UserController {
       res.status(200).json(ResponseDTO.success(user));
 
       if (loadish.isEmpty(user)) {
-        return res.status(500).json(ResponseDTO.fail("Failed to create user"));
+        return res.status(500).json(ResponseDTO.fail('Failed to create user'));
       }
     } catch (e) {
       console.error(e);
-      res.status(500).json(ResponseDTO.fail("Failed to create user"));
+      res.status(500).json(ResponseDTO.fail('Failed to create user'));
     }
   }
 
@@ -42,7 +42,7 @@ export class UserController {
       res.status(200).json(ResponseDTO.success(users));
     } catch (e) {
       console.error(e);
-      res.status(500).json(ResponseDTO.fail("Failed to get all users"));
+      res.status(500).json(ResponseDTO.fail('Failed to get all users'));
     }
   }
 
@@ -54,11 +54,9 @@ export class UserController {
     const user = await this.userService.getUserByLoginId(loginId);
 
     if (!loadish.isEmpty(user)) {
-      res
-        .status(200)
-        .json(ResponseDTO.success(user, "Success to get user info"));
+      res.status(200).json(ResponseDTO.success(user));
     } else {
-      return res.status(500).json(ResponseDTO.fail("Failed to get user info"));
+      return res.status(500).json(ResponseDTO.fail('Failed to get user info'));
     }
   }
 
@@ -66,14 +64,11 @@ export class UserController {
   // => req.body: { loginId, password }
   async getUserByLoginIdAndPassword(req, res) {
     const { loginId, password } = req.body;
-    const user = await this.userService.getUserByLoginIdAndPassword(
-      loginId,
-      password
-    );
+    const user = await this.userService.getUserByLoginIdAndPassword(loginId, password);
     if (!loadish.isEmpty(user)) {
       res.status(200).json(ResponseDTO.success(user));
     } else {
-      res.status(401).json(ResponseDTO.fail("Login failed"));
+      res.status(401).json(ResponseDTO.fail('Login failed'));
     }
   }
 
@@ -87,7 +82,7 @@ export class UserController {
       res.status(200).json(user);
     } catch (e) {
       console.error(e);
-      res.status(500).json({ message: "Failed to update user date" });
+      res.status(500).json({ message: 'Failed to update user date' });
     }
   }
 
@@ -98,12 +93,10 @@ export class UserController {
 
     try {
       const deleted = await this.userService.deleteByLoginId(loginId);
-      res
-        .status(200)
-        .json(ResponseDTO.success(deleted, "success to delete user"));
+      res.status(200).json(ResponseDTO.success(deleted));
     } catch (e) {
       console.error(e);
-      res.status(500).json(ResponseDTO.fail("Failed to delete user"));
+      res.status(500).json(ResponseDTO.fail('Failed to delete user'));
     }
   }
 
@@ -114,12 +107,10 @@ export class UserController {
     const { loginIds } = req.body;
     try {
       const deletedIds = await this.userService.deleteByLoginIds(loginIds);
-      res
-        .status(200)
-        .json(ResponseDTO.success(deletedIds, "success to delete many users"));
+      res.status(200).json(ResponseDTO.success(deletedIds));
     } catch (e) {
       console.error(e);
-      res.status(500).json(ResponseDTO.fail("Failed to delete many users"));
+      res.status(500).json(ResponseDTO.fail('Failed to delete many users'));
     }
   }
 
@@ -129,12 +120,10 @@ export class UserController {
     const { loginId } = req.body;
     try {
       const restored = await this.userService.restoreByLoginId(loginId);
-      res
-        .status(200)
-        .json(ResponseDTO.success(restored, "success to user restore"));
+      res.status(200).json(ResponseDTO.success(restored));
     } catch (e) {
       console.error(e);
-      res.status(500).json(ResponseDTO.fail("Failed to restore user"));
+      res.status(500).json(ResponseDTO.fail('Failed to restore user'));
     }
   }
 }
