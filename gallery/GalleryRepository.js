@@ -3,7 +3,7 @@ import { EntityKeyConverter } from '../utils/entityKeyConverter.js';
 
 export class GalleryRepository extends BaseRepository {
   constructor() {
-    super('compnay_gallery');
+    super('company_gallery');
     this.converter = new EntityKeyConverter();
   }
 
@@ -12,10 +12,28 @@ export class GalleryRepository extends BaseRepository {
     try {
       const postKeys = this.converter.convertKeysToSnakeCase(Object.keys(post));
       const postValues = Object.values(post);
-      const posts = this.create(post, postKeys, postValues);
+      const posts = await this.create(post, postKeys, postValues);
       return this.converter.convertEntitySnakeToCamelCaseKeys(posts);
     } catch (e) {
       throw new Error('Failed to create gallery');
     }
   }
+
+  // 갤러리 전체 조회
+  async getAllGallery() {
+    try {
+      return await this.getAll();
+    } catch (e) {
+      throw new Error('Failed to get all gallery');
+    }
+  }
+  // // 갤러리 전체 조회
+  // async getAllGallery() {
+  //   try {
+  //     await this.initialize();
+  //     return await this.db.all(`SELECT * FROM ${this.tableName}`);
+  //   } catch (e) {
+  //     throw new Error('Failed to get all gallery');
+  //   }
+  // }
 }

@@ -94,6 +94,7 @@ create table if not exists administrator(
     await this.db.run(`
 create table if not exists company_gallery(
     id integer primary key,
+    administrator_id integer,
     title TEXT,
     content text,
     img text,

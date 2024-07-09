@@ -4,14 +4,14 @@ import loadish from 'lodash';
 
 export class GalleryController {
   constructor({ galleryService }) {
-    this.userService = galleryService;
+    this.galleryService = galleryService;
     this.router = express.Router();
     this.routes();
   }
 
   routes() {
     this.router.post('/', this.createPosts.bind(this));
-    this.router.get('/', this.getAll.bind(this));
+    this.router.get('/', this.getAllGallery.bind(this));
   }
 
   // 갤러리 글 작성
@@ -23,19 +23,19 @@ export class GalleryController {
         throw new Error('Request body is empty');
       }
       const galleryPosts = await this.galleryService.createPosts(gallery);
-      res.status(200).json(new ResponseDTO(galleryPosts));
+      res.status(200).json(ResponseDTO.success(galleryPosts));
     } catch (e) {
-      res.status(500).json(new ResponseDTO(e.message));
+      res.status(500).json(ResponseDTO.fail(e.message));
     }
   }
 
   // 갤러리 전체 조회
-  async getAll(req, res) {
+  async getAllGallery(req, res) {
     try {
-      const galleryPosts = await this.galleryService.getAll();
-      res.status(200).json(new ResponseDTO(galleryPosts));
+      const galleryPosts = await this.galleryService.getAllGallery();
+      res.status(200).json(ResponseDTO.success(galleryPosts));
     } catch (e) {
-      res.status(500).json(new ResponseDTO(e.message));
+      res.status(500).json(ResponseDTO.fail(e.message));
     }
   }
 }

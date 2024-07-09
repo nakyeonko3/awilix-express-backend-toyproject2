@@ -13,9 +13,9 @@ export class AttendanceController {
   routes() {
     this.router.post('/', this.createAttendance.bind(this));
     this.router.get('/', this.getAllAttendanceList.bind(this));
-    this.router.post('/by-id', this.getAttendanceListById.bind(this));
-    this.router.get('/by-type', this.getAttendanceListByAttendanceType.bind(this));
-    this.router.get('/by-username', this.getAttendanceListByUserName.bind(this));
+    this.router.post('/filter/by-login-id', this.getAttendanceListById.bind(this));
+    this.router.get('/filter/by-type', this.getAttendanceListByAttendanceType.bind(this));
+    this.router.get('/filter/by-username', this.getAttendanceListByUserName.bind(this));
     this.router.put('/update', this.updateAttendanceByLoginId.bind(this));
     this.router.delete('/delete', this.deleteAttendancebyIdAndUserId.bind(this));
   }

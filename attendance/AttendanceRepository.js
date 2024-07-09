@@ -117,9 +117,8 @@ export class AttendanceRepository extends BaseRepository {
         `
       update ${this.tableName} 
       SET ${sets} 
-      where user_id = (select users.id from users where users.login_id = '${loginId}
-      and id = ${id}
-      ');
+      where user_id = (select users.id from users where users.login_id = '${loginId}')
+      and ${this.tableName}.id = ${id};
       `,
         values
       );
@@ -143,7 +142,7 @@ export class AttendanceRepository extends BaseRepository {
       `,
         id
       );
-      return { loginId };
+      return { id };
     } catch (e) {
       console.error(e);
     }

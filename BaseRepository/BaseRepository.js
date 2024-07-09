@@ -22,10 +22,10 @@ export class BaseRepository {
     return await this.db.get(`SELECT * FROM ${this.tableName} WHERE id = ?`, id);
   }
 
-  async create(entity, keys, values) {
+  async create(entity, entitykeys, entityvalues) {
     await this.initialize();
-    const keys = keys || Object.keys(entity);
-    const values = values || Object.values(entity);
+    const keys = entitykeys || Object.keys(entity);
+    const values = entityvalues || Object.values(entity);
     const placeholders = keys.map(() => '?').join(',');
     const { lastID } = await this.db.run(
       `INSERT INTO ${this.tableName} (${keys.join(',')}) VALUES (${placeholders})`,

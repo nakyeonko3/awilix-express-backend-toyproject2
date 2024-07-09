@@ -62,6 +62,7 @@ export class AttendanceService {
       if (loadish.isEmpty(updatedAttendance)) {
         throw new Error('Failed to update attendance, is empty');
       }
+      return updatedAttendance;
     } catch (e) {
       console.error(e);
       throw new Error('Failed to update attendance');

@@ -6,7 +6,7 @@ export class GalleryService {
   }
 
   // 갤러리 전체 조회
-  async getAll() {
+  async getAllGallery() {
     try {
       return await this.galleryRepository.getAll();
     } catch (e) {
