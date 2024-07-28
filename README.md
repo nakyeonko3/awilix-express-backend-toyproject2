@@ -37,4 +37,12 @@ npm run server
 ## ERD 
 
 ![](https://i.imgur.com/HokagIE.png)
+
+## 참고
+
+- 연관 프로젝트 링크
+해당 프로젝트의 백엔드 서버를 구현함.
+https://github.com/Dev-FE-1/team2-intranet-project-
+
+- 프로젝트에 사용된 sql 쿼리문 정리 
 [awilix-express-backend-toyproject2/databaseDegin.md at main · nakyeonko3/awilix-express-backend-toyproject2 · GitHub](https://github.com/nakyeonko3/awilix-express-backend-toyproject2/blob/main/databaseDegin.md)
