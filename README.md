@@ -34,5 +34,7 @@ npm run start # node ./server.js
 npm run server
 ```
 
-## 데이터베이스 ERD 와 쿼리문
+## ERD 
+
+![](https://i.imgur.com/HokagIE.png)
 [awilix-express-backend-toyproject2/databaseDegin.md at main · nakyeonko3/awilix-express-backend-toyproject2 · GitHub](https://github.com/nakyeonko3/awilix-express-backend-toyproject2/blob/main/databaseDegin.md)
